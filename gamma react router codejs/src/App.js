@@ -53,7 +53,8 @@ export default class App extends Component {
         console.log(err)
       })
   }
-  componentDidMount = () => this.getOrders()
+  componentDidMount = () => {this.getOrders()
+     this.getUsers()}
   addOrder = (nN, nP, nNum, nC) => {
     // req.body.category, req.body.itemName, 
     // req.body.color, b.price, b.id, b.quantity
@@ -189,12 +190,13 @@ export default class App extends Component {
     console.log(updatedUser)
     axios.put("http://localhost:4000/users/update-user", updatedUser).then((res) => {
       console.log("res updated", res.data);
-      this.setState({ users: res.data })
+      // this.setState({ users: res.data })
       this.getUsers()
     }).catch((err) => {
       console.log("err", err);
     })
   }
+  
 
   render() {
     const {updateUser, eUserName, eId,ePassword, ePermission,

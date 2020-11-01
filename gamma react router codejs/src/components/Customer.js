@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 export default class Customer extends Component {
     render() {
         // console.log(this.props.user)
-        const { birthday, userId, userName, permission, email, password } = this.props.user
+        const { birthday, userId, userName, permissions, email, password } = this.props.user
         // console.log("num:", num)
         return (
             <div className="cust" >
                 <p>  {this.props.num}- Customer info</p>
                 <p>email={email}   </p>
                 <p>user name={userName}</p>
-                <p> permission={permission} </p>
+                <p> permission={permissions} </p>
                 <p>user id -- {userId} --</p>
                 <p>birthday={birthday}</p>
             </div>

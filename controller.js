@@ -28,9 +28,9 @@ require('dotenv').config()
 
   const register = async (user) => {
   // console.log(user);
-  if (!user.email.includes("@")||!user.email.includes(".com")) {
-    return  "Please enter your email currect"
-  }
+  // if (!user.email.includes("@")||!user.email.includes(".com")) {
+  //   return  "Please enter your email currect"
+  // }
   // const newUser = users.filter((u) => {
   //   return u.email === user.email
   // })
@@ -38,12 +38,36 @@ require('dotenv').config()
 console.log(err);
   })
   console.log("newUser:",newUser);
-  if (newUser.length === 0) {
+  if (!(user.email)) {
+    console.log("please enter your email 12333")
+  return "please enter your email"
+}
+if (!(user.password)) {
+  console.log("please enter your password")
+return "please enter your password"
+} 
+if (!(user.birthDay)) {
+  console.log("please enter your birthDay")
+return "please enter your birthDay"
+}if (!(user.id)) {
+  console.log("please enter your id")
+return "please enter your id"
+} 
+if (!(user.userName)) {
+  console.log("please enter your userName")
+return "please enter your userName"
+} 
+if (!(user.permission)) {
+  console.log("please enter your id")
+return "please enter your permission"
+} 
+if (newUser.length === 0) {
     const addUser = user
-    addUser.ID = 2;
+    // addUser.ID = 2;
     addUser.password = await bcrypt.hash(user.password, Number(process.env.SALT))
     // if (user.birthDay==="") {
-    //   return "Please enter your birthday"
+    //  alert("Please enter your birthday")
+    //  return"Please enter your birthday"
     // }
     // if (user.userName.length<4||user.userName.includes("#")) {
     //   return "Please enter your user name currect"
@@ -54,14 +78,16 @@ console.log(err);
       userId:user.id,
       email:user.email,
       password:addUser.password,
-      permissions:"r ,w ,u ,d",
+      permissions:user.permission,
       birthday:user.birthDay,
     }).save((err)=>{console.log(err); })
     console.log("newUser:",newUser)
     // users.push(addUser)
     // console.log("added", users)
+    
     return `welcome to our website MR.${user.userName.toUpperCase()}`
   } else {
+    // alert()
     return "user is here in data base"
 
     // console.log('salt ', Number(process.env.SALT));

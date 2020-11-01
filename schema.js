@@ -6,7 +6,7 @@ const users = new mongoose.Schema({
     email:{type:String,require:true},
     password:{type:String,require:true},
     permissions:{type:String,require:true},
-    birthday:{type:Number,require:true},
+    birthday:{type:Date,require:true},
 
     
 })
