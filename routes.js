@@ -61,7 +61,7 @@ authRouter.get('/orders', async (req, res) => {
     // res.json(await getOrders(req.body))
     res.json(await ordersModule.find({}))
 })
-authRouter.get('/orders/add', async (req, res) => {
+authRouter.post('/orders/add', async (req, res) => {
     const b = req.body
     res.json(await addOrder(req.body.category, req.body.itemName, req.body.color, b.price, b.id, b.quantity))
 })
@@ -72,10 +72,19 @@ authRouter.get('/orders/find', async (req, res) => {
 authRouter.put('/orders/update', async (req, res) => {
     res.json(await updateOrder(req.body))
 })
-authRouter.delete('/orders/delete', async (req, res) => {
+authRouter.post('/orders/delete', async (req, res) => {
+    console.log("malek.delete")
+    console.log('body:',req.body)
+
     res.json(await deleteOrder(req.body))
+
 })
 
+authRouter.post('/ttt', async (req, res) => {
+    console.log('body:',req.body)
+    console.log("malek.delete")
+    res.json('test ttt')
+})
 console.log(12222342423);
 authRouter.all("*", (req, res, next) => {
     const err = new Error("Error 404 :path not found")

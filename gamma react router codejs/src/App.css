@@ -1,0 +1,37 @@
+.app {
+  border: solid green 5px;
+}
+.custList {
+  border: solid red 4px;
+}
+.orderslist {
+  border: solid blue 4px;
+}
+.orders {
+  border: solid black 3px;
+}.cust {
+  border: solid black 3px;
+}
+
+/* don't forget to do line through */
+
+
+.home {
+  border: solid purple 7px;
+  text-transform: uppercase;
+}
+.tasks {
+  border: solid orange 7px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.about {
+  border: solid tomato 7px;
+}
+
+.main-nav{
+  list-style: none;
+  /* display: flex; */
+}
+.main-nav li{
+  display: inline;
+}

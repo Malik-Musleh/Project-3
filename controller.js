@@ -157,7 +157,7 @@ const getUser = async (user) => {
   return users
 
 }
-var m = 6
+var m = 1
 const addOrder = async (oCategory, oName, oColor,oPrice,oId,quantity) => {
   const newOrder ={}
   // newOrder.Name = oName
@@ -228,6 +228,7 @@ const updated =await ordersModule.update({orderId:order.eId},
 }
 const deleteOrder=async(order)=>{
   const deleted = await ordersModule.deleteOne({orderId:order.dId},(err,result)=>{
+   console.log("order.dId",order.dId)
     if(err){console.log(err)}
     else{console.log(result);}
   })
