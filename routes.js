@@ -37,12 +37,12 @@ authRouter.get('/login', async (req, res) => {
         throw err
     }
 })
-authRouter.delete('/users/delete',/* middleware,*/ async (req, res) => {
+authRouter.post('/users/delete',/* middleware,*/ async (req, res) => {
     // res.json(await getUsers())
     res.json(await deleteUser(req.body))
 
 })
-authRouter.delete('/users/delete-all',/* middleware,*/ async (req, res) => {
+authRouter.post('/users/delete-all',/* middleware,*/ async (req, res) => {
     // res.json(await getUsers())
     res.json(await deleteAllUsers(req.body))
 
@@ -53,7 +53,7 @@ authRouter.get('/users',/* middleware,*/ async (req, res) => {
 
 })
 authRouter.put('/users/update-user',/* middleware,*/ async (req, res) => {
-    // res.json(await getUsers())
+    console.log("update1")
     res.json(await updateUser(req.body))
 
 })

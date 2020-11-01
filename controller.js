@@ -8,18 +8,18 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
-const nUsers= new usersModule({
-    userName:"user.userName",
-    userId:2,
-    email:"user.email",
-    password:"addUser.password",
-    permissions:"{r,w,u,d}",
-    birthday:2,
-  }).save((err,result)=>
-  {if(err){console.log(err);}
-else 
-console.log("result:",result);
-})
+// const nUsers= new usersModule({
+//     userName:"user.userName",
+//     userId:2,
+//     email:"user.email",
+//     password:"addUser.password",
+//     permissions:"{r,w,u,d}",
+//     birthday:2,
+//   }).save((err,result)=>
+//   {if(err){console.log(err);}
+// else 
+// console.log("result:",result);
+// })
   
   // console.log("users:",nUsers);
 
@@ -143,7 +143,7 @@ return await  usersModule.updateOne({email:user.eEmail},{
   userName:user.eUserName,
   userId:user.eId,
   email:user.eEmail,
-  password:newPass,
+  password:user.epassword,
   permissions:user.ePermission,
   birthday:user.eBirthDay,
 }
