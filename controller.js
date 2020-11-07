@@ -1,4 +1,4 @@
-const {usersModule,ordersModule} = require("./schema")
+const { usersModule, ordersModule } = require("./schema")
 const { orders, users, roles } = require('./models');
 const db = require("./db")
 
@@ -20,13 +20,13 @@ require('dotenv').config()
 // else 
 // console.log("result:",result);
 // })
-  
-  // console.log("users:",nUsers);
+
+// console.log("users:",nUsers);
 
 
 
 
-  const register = async (user) => {
+const register = async (user) => {
   // console.log(user);
   // if (!user.email.includes("@")||!user.email.includes(".com")) {
   //   return  "Please enter your email currect"
@@ -34,34 +34,34 @@ require('dotenv').config()
   // const newUser = users.filter((u) => {
   //   return u.email === user.email
   // })
-  const newUser =await usersModule.find({email:user.email},(err)=>{
-console.log(err);
+  const newUser = await usersModule.find({ email: user.email }, (err) => {
+    console.log(err);
   })
-  console.log("newUser:",newUser);
+  console.log("newUser:", newUser);
   if (!(user.email)) {
     console.log("please enter your email 12333")
-  return "please enter your email"
-}
-if (!(user.password)) {
-  console.log("please enter your password")
-return "please enter your password"
-} 
-if (!(user.birthDay)) {
-  console.log("please enter your birthDay")
-return "please enter your birthDay"
-}if (!(user.id)) {
-  console.log("please enter your id")
-return "please enter your id"
-} 
-if (!(user.userName)) {
-  console.log("please enter your userName")
-return "please enter your userName"
-} 
-if (!(user.permission)) {
-  console.log("please enter your id")
-return "please enter your permission"
-} 
-if (newUser.length === 0) {
+    return "please enter your email"
+  }
+  if (!(user.password)) {
+    console.log("please enter your password")
+    return "please enter your password"
+  }
+  if (!(user.birthDay)) {
+    console.log("please enter your birthDay")
+    return "please enter your birthDay"
+  } if (!(user.id)) {
+    console.log("please enter your id")
+    return "please enter your id"
+  }
+  if (!(user.userName)) {
+    console.log("please enter your userName")
+    return "please enter your userName"
+  }
+  if (!(user.permission)) {
+    console.log("please enter your id")
+    return "please enter your permission"
+  }
+  if (newUser.length === 0) {
     const addUser = user
     // addUser.ID = 2;
     addUser.password = await bcrypt.hash(user.password, Number(process.env.SALT))
@@ -74,17 +74,17 @@ if (newUser.length === 0) {
 
     // }
     new usersModule({
-      userName:user.userName,
-      userId:user.id,
-      email:user.email,
-      password:addUser.password,
-      permissions:user.permission,
-      birthday:user.birthDay,
-    }).save((err)=>{console.log(err); })
-    console.log("newUser:",newUser)
+      userName: user.userName,
+      userId: user.id,
+      email: user.email,
+      password: addUser.password,
+      permissions: user.permission,
+      birthday: user.birthDay,
+    }).save((err) => { console.log(err); })
+    console.log("newUser:", newUser)
     // users.push(addUser)
     // console.log("added", users)
-    
+
     return `welcome to our website MR.${user.userName.toUpperCase()}`
   } else {
     // alert()
@@ -96,9 +96,9 @@ if (newUser.length === 0) {
 // console.log(users);
 
 const logIn = async (user) => {
-  const newUser = await usersModule.find({email:user.email},(err)=>{
+  const newUser = await usersModule.find({ email: user.email }, (err) => {
     console.log(err);
-      })
+  })
   // users.filter((u) => {
   //   return u.email === user.email
   // }) 
@@ -108,14 +108,15 @@ const logIn = async (user) => {
   // addedUser.password = await bcrypt.hash(addedUser.password, Number(process.env.SALT))
   // console.log("hashed",addedUser.password );
   if (newUser.length === 0) {
-    return "password or email is incorrect"
+    console.log("password or email is incorrect")
+    return false
   } else {
 
     console.log("passsssssssssed", await bcrypt.compare(user.password, newUser[0].password))
     if (await bcrypt.compare(user.password, newUser[0].password)) {
-      const permission = await usersModule.find({userId:user.Id},(err)=>{
+      const permission = await usersModule.find({ userId: user.Id }, (err) => {
         console.log(err);
-          })
+      })
       // roles.filter((p) => {
       //   return p.id === newUser[0].role_id
       // })
@@ -127,15 +128,15 @@ const logIn = async (user) => {
       const options = {
         expiresIn: process.env.TOKEN_EXPIRATION
       }
-      
-      // console.log(jwt.sign(payload, process.env.SECRET, options));
-      
-      
-      
-      return jwt.sign(payload, process.env.SECRET, options)
-    
+
+      console.log(jwt.sign(payload, process.env.SECRET, options));
+
+
+      return true
+
     } else {
-      return "password is incorrect"
+      console.log( "password is incorrect")
+      return false
     }
   }
 }
@@ -145,38 +146,45 @@ const logIn = async (user) => {
 
 const getUsers = async (user) => {
   console.log(1);
-return await nUsers.find({})
+  return await nUsers.find({})
 }
-const deleteUser = async (user) => {
-  console.log(1);
-return await  usersModule.deleteOne({email:user.email},(err)=>{
-  console.log(err);
-}
-)
-}
+  const deleteUser =async (req, res) => {
+    console.log('PARAMS: ',  req.params);
+    usersModule.findOneAndDelete(
+      { email: req.params.email },
+    )
+      .then((result) => {
+        // console.log('RESULT: ',result)
+        res.json('Success delete 1 item ');
+      })
+      .catch((err) => {
+        console.log('ERR: ', err);
+        res.json(err);
+      });
+  };
 const deleteAllUsers = async (user) => {
   console.log(1);
-return await  usersModule.deleteMany({email:user.email},(err)=>{
-  console.log(err);
-}
-)
+  return await usersModule.deleteMany({ email: user.email }, (err) => {
+    console.log(err);
+  }
+  )
 }
 const updateUser = async (user) => {
   console.log(1);
-  const newPass=await bcrypt.hash(user.ePassword,Number(process.env.SALT))
+  const newPass = await bcrypt.hash(user.ePassword, Number(process.env.SALT))
   console.log("newPass:", newPass);
-return await  usersModule.updateOne({email:user.eEmail},{
-  userName:user.eUserName,
-  userId:user.eId,
-  email:user.eEmail,
-  password:user.epassword,
-  permissions:user.ePermission,
-  birthday:user.eBirthDay,
-}
-  ,(err)=>{
-  console.log(err);
-}
-)
+  return await usersModule.updateOne({ email: user.eEmail }, {
+    userName: user.eUserName,
+    userId: user.eId,
+    email: user.eEmail,
+    password: user.epassword,
+    permissions: user.ePermission,
+    birthday: user.eBirthDay,
+  }
+    , (err) => {
+      console.log(err);
+    }
+  )
 }
 const getUser = async (user) => {
   console.log(1);
@@ -184,26 +192,27 @@ const getUser = async (user) => {
 
 }
 var m = 1
-const addOrder = async (oCategory, oName, oColor,oPrice,oId,quantity) => {
-  const newOrder ={}
+const addOrder = async (oCategory, oName, oColor, oPrice, oId, quantity) => {
+  const newOrder = {}
   // newOrder.Name = oName
   // newOrder.Color = oColor
-  newOrder.Id= m++
-  newOrder.Id=newOrder.Id.toString()
+  newOrder.Id = m++
+  newOrder.Id = newOrder.Id.toString()
   // newOrder.Price=oPrice
-const allOrders=await new ordersModule({
-  itemName:oName,
-    price:oPrice,
-    numOfItems:quantity,
-    color:oColor,
-    orderId:newOrder.Id
-}).save((err,result)=>{if(err){console.log(err);}
-else{console.log(result)}
-})
-console.log("allOrders:", allOrders);
+  const allOrders = await new ordersModule({
+    itemName: oName,
+    price: oPrice,
+    numOfItems: quantity,
+    color: oColor,
+    orderId: newOrder.Id
+  }).save((err, result) => {
+    if (err) { console.log(err); }
+    else { console.log(result) }
+  })
+  console.log("allOrders:", allOrders);
   // orders.push(newOrder)
   // return orders
-return await ordersModule.find({})
+  return await ordersModule.find({})
 }
 const getOrders = async (order) => {
   console.log(1);
@@ -211,12 +220,12 @@ const getOrders = async (order) => {
 
 }
 const getOrder = async (order) => {
-  const myOrder = await ordersModule.findOne({orderId:order.fId},(err,result)=>{
-    if(err){console.log(err)}
-    else{console.log(result);}
+  const myOrder = await ordersModule.findOne({ orderId: order.fId }, (err, result) => {
+    if (err) { console.log(err) }
+    else { console.log(result); }
   })
   return myOrder
-  
+
   // const ord =order
   // const myOrder =  orders.filter((o)=>{
   //   return  o.id===order.id
@@ -228,14 +237,15 @@ const getOrder = async (order) => {
   // return myOrder
 
 }
-const updateOrder=async(order)=>{
-const updated =await ordersModule.update({orderId:order.eId}, 
-  {itemName:order.eName,
-  price:order.ePrice,
-  numOfItems:order.eQuantity,
-  color:order.eColor,
-  // orderId:Order.eId
-})
+const updateOrder = async (order) => {
+  const updated = await ordersModule.update({ orderId: order.eId },
+    {
+      itemName: order.eName,
+      price: order.ePrice,
+      numOfItems: order.eQuantity,
+      color: order.eColor,
+      // orderId:Order.eId
+    })
   return updated
   // let myOrder =  orders.filter((o)=>{
   //   return  o.id===order.id
@@ -250,25 +260,25 @@ const updated =await ordersModule.update({orderId:order.eId},
 
   // console.log("my2",myOrder);
   // return 
-  
+
 }
-const deleteOrder=async(order)=>{
-  const deleted = await ordersModule.deleteOne({orderId:order.dId},(err,result)=>{
-   console.log("order.dId",order.dId)
-    if(err){console.log(err)}
-    else{console.log(result);}
+const deleteOrder = async (req,res) => {
+  console.log("order.dId", req.params.id)
+  const deleted = await ordersModule.deleteOne({ orderId: req.params.id }, (err, result) => {
+    if (err) { console.log(err) }
+    else { console.log(result); }
   })
-  return deleted
+  res.json(deleted) 
   //  for (let index = 0; index < orders.length; index++) {
   //   if (orders[index].id===order.id) {
   //     orders.splice(index,1)
   //     index--
-      // return orders
-    // }
-// } 
-    
-  
-  return orders
+  // return orders
+  // }
+  // } 
+
+
+  // return orders
 }
 
 module.exports = {
@@ -283,6 +293,6 @@ module.exports = {
   getOrder,
   updateOrder,
   deleteOrder,
-  
+
 
 }

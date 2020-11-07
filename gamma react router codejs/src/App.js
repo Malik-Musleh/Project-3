@@ -29,7 +29,7 @@ export default class App extends Component {
       ],
       orders: [],
       orderId: "",
-      login: true,
+      login: false,
       dEmail: "",
       // edited: {
       //   eUserName:"",
@@ -53,8 +53,7 @@ export default class App extends Component {
         console.log(err)
       })
   }
-  componentDidMount = () => {this.getOrders()
-     this.getUsers()}
+
   addOrder = (nN, nP, nNum, nC) => {
     // req.body.category, req.body.itemName, 
     // req.body.color, b.price, b.id, b.quantity
@@ -87,7 +86,8 @@ export default class App extends Component {
   }
   deleteOrder = () => {
     const deletebyId = Number(this.state.orderId)
-    axios.post("http://localhost:4000/orders/delete", { dId: deletebyId }).then((res) => {
+    axios.delete(`http://localhost:4000/orders/${deletebyId}`
+    ).then((res) => {
       // console.log("res:", res.data)
       console.log("delete order done")
 
@@ -117,11 +117,21 @@ export default class App extends Component {
         console.log(err)
       })
   }
-  // componentDidMount() {
-  //   console.log('componentDidMount', 3);
-  //   this.getAllTasks();
+
   login = () => {
-    this.setState({ login: true })
+    const loginUser = {
+      email: this.state.dEmail,
+      password: this.state.password,
+    }
+    axios.put("http://localhost:4000/login",{ email: this.state.dEmail,
+    password: this.state.password}).then((res)=>{
+      console.log("res login:" ,res.data)
+    alert(res.data)
+    this.setState({ login: res.data })
+
+    }).catch((err)=>{
+      console.log(err)
+    })
   }
   logout = () => {
     this.setState({ login: false })
@@ -133,6 +143,10 @@ export default class App extends Component {
     }).catch((err) => {
       console.log("err", err);
     })
+  }
+  componentDidMount = () => {
+    this.getOrders()
+    this.getUsers()
   }
   email = (e) => {
     // console.log("e:",e.target.value)
@@ -149,9 +163,10 @@ export default class App extends Component {
   }
   deleteUser = () => {
     const deletedUser = this.state.dEmail
-    axios.post("http://localhost:4000/users/delete", { email: deletedUser }).then((res) => {
+    axios.delete(`http://localhost:4000/users/${deletedUser}`).then((res) => {
       console.log("res", res.data);
-      this.setState({ users: res.data })
+      // this.setState({ users: res.data })
+      this.getUsers()
     }).catch((err) => {
       console.log("err", err);
     })
@@ -159,20 +174,24 @@ export default class App extends Component {
   eUserName = (e) => {
     // console.log("e:",e.target.value)
     // console.log("this.edited.eUserName:",this.state.edited.eUserName)
-    
+
     this.setState({ eUserName: e.target.value })
   }
   eId = (e) => {
     // console.log("e:",e.target.value)
-    this.setState({eId: e.target.value })
+    this.setState({ eId: e.target.value })
   }
   ePassword = (e) => {
     // console.log("e:",e.target.value)
-    this.setState({ePassword: e.target.value })
+    this.setState({ ePassword: e.target.value })
+  }
+  password = (e) => {
+    // console.log("e:",e.target.value)
+    this.setState({ password: e.target.value })
   }
   ePermission = (e) => {
     // console.log("e:",e.target.value)
-    this.setState({ePermission: e.target.value })
+    this.setState({ ePermission: e.target.value })
   }
   eBirthDay = (e) => {
     // console.log("e:",e.target.value)
@@ -196,66 +215,69 @@ export default class App extends Component {
       console.log("err", err);
     })
   }
-  
+
 
   render() {
-    const {updateUser, eUserName, eId,ePassword, ePermission,
-    eBirthDay, deleteUser, email, deleteUsers, getUsers, orderId,
-      login, logout, getOrders, addOrder, updateOrder, deleteOrder
-  } = this
-  // console.log("hallo world")
-  return(
+    const { updateUser, eUserName, eId, ePassword, ePermission,
+      eBirthDay, deleteUser, email, deleteUsers, getUsers, orderId,
+      login, logout, password, getOrders, addOrder, updateOrder, deleteOrder
+    } = this
+    // console.log("hallo world")
+    return (
       <Router>
-  <div className="app" >
+        <div className="app" >
 
-    <Route path="/" >
-      <Home />
-      <ul>
-        <li><Link to="/order" >OrdersList</Link></li>
-        <li><Link to="/customer" > CustomersList </Link></li>
-        <li><Link to="/login"> login </Link></li>
-        <li><Link to="/about" >about</Link></li>
-      </ul>
-    </Route>
-    <Route exact path="/login" >
-      <input type="search" placeholder="type your email" />
-      <input type="password" placeholder="type your password" />
-      <button onClick={login} >Login</button>
-      <button onClick={logout}> logout</button>
-      <Link to="/register" >register. . . </Link>
-    </Route>
-    <Route exact path="/register" render={(props) => <Register {...this.props} />} />
-    <Route exact path="/about" render={() => <About {...this.props} />} />
+          <Route path="/" >
+            <Home />
+            <ul>
+              <li><Link to="/order" >OrdersList</Link></li>
+              <li><Link to="/customer" > CustomersList </Link></li>
+              <li><Link to="/login"> login </Link></li>
+              <li><Link to="/about" >about</Link></li>
+            </ul>
+          </Route>
+          <Route exact path="/login" >
+            {this.state.login?(<Redirect to="/order"></Redirect>):(<div>
+              <input onChange={email} type="search" placeholder="type your email" />
+            <input onChange={password} type="password" placeholder="type your password" />
+            <button onClick={login} >Login</button>
+            <button onClick={logout}> logout</button>
+            <Link to="/register" >register. . . </Link>
+            </div>)}
+           
+          </Route>
+          <Route exact path="/register" render={(props) => <Register {...this.props} />} />
+          <Route exact path="/about" render={() => <About {...this.props} />} />
 
-    <Route path="/order" >
-      {this.state.login ? (<div> <NewOrder update={updateOrder} add={addOrder} />
-        <button onClick={getOrders} >getOrders</button>
-        <button onClick={deleteOrder} >deleteOrder</button>
-        <button onClick={updateOrder} >updateOrder</button>
-        <input onChange={orderId} placeholder="add Id" />
+          <Route path="/order" >
+            {this.state.login ? (<div> <NewOrder update={updateOrder} add={addOrder} />
+              <button onClick={getOrders} >getOrders</button>
+              <button onClick={deleteOrder} >deleteOrder</button>
+              <button onClick={updateOrder} >updateOrder</button>
+              <input onChange={orderId} placeholder="add Id" />
 
-        <OrdersList exact orders={this.state.orders} />
+              <OrdersList exact orders={this.state.orders} />
 
-      </div>)
-        : (<Link to="/login" > login first to
+            </div>)
+              : (<Link to="/login" > login first to
             see the orders  </Link>)}
 
-    </Route>
-    <Route exact path="/customer"  >
-      <button onClick={getUsers} >get all Users</button>
-      <button onClick={deleteUsers} >delete all Users by email </button>
-      <button onClick={deleteUser} >delete one User by email </button>
-      <button onClick={updateUser} >update one User by email </button>
-      <input onChange={email} placeholder="delete email" />
-      <input onChange={eUserName} placeholder="edit UserName" />
-      <input onChange={eId} placeholder="edit Id" />
-      <input onChange={ePassword} placeholder="edit Password" />
-      <input onChange={ePermission} placeholder="edit Permission" />
-      <input onChange={eBirthDay} placeholder="edit BirthDay" />
+          </Route>
+          <Route exact path="/customer"  >
+            <button onClick={getUsers} >get all Users</button>
+            <button onClick={deleteUsers} >delete all Users by email </button>
+            <button onClick={deleteUser} >delete one User by email </button>
+            <button onClick={updateUser} >update one User by email </button>
+            <input onChange={email} placeholder="delete email" />
+            <input onChange={eUserName} placeholder="edit UserName" />
+            <input onChange={eId} placeholder="edit Id" />
+            <input onChange={ePassword} placeholder="edit Password" />
+            <input onChange={ePermission} placeholder="edit Permission" />
+            <input onChange={eBirthDay} placeholder="edit BirthDay" />
 
-      <CustomersList users={this.state.users} />
-    </Route>
-  </div>
+            <CustomersList users={this.state.users} />
+          </Route>
+        </div>
       </Router >
     )
   }

@@ -28,20 +28,18 @@ authRouter.get("/protect", logIn, middleware, (req, res) => {
         throw error
     }
 })
-authRouter.get('/login', async (req, res) => {
+authRouter.put('/login', async (req, res) => {
     try {
         console.log(req.body);
+        console.log(1111111111111111112);
         res.json(await logIn(req.body))
-        console.log(2);
+        console.log(222222222222222222);
     } catch (err) {
         throw err
     }
 })
-authRouter.post('/users/delete',/* middleware,*/ async (req, res) => {
-    // res.json(await getUsers())
-    res.json(await deleteUser(req.body))
-
-})
+authRouter.delete('/users/:email',/*(req,res,next)=> {console.log(req.params) next()} */
+deleteUser)
 authRouter.post('/users/delete-all',/* middleware,*/ async (req, res) => {
     // res.json(await getUsers())
     res.json(await deleteAllUsers(req.body))
@@ -72,13 +70,9 @@ authRouter.get('/orders/find', async (req, res) => {
 authRouter.put('/orders/update', async (req, res) => {
     res.json(await updateOrder(req.body))
 })
-authRouter.post('/orders/delete', async (req, res) => {
-    console.log("malek.delete")
-    console.log('body:',req.body)
+authRouter.delete('/orders/:id',deleteOrder)
 
-    res.json(await deleteOrder(req.body))
 
-})
 
 authRouter.post('/ttt', async (req, res) => {
     console.log('body:',req.body)
