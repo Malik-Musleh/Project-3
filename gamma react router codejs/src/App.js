@@ -27,9 +27,9 @@ export default class App extends Component {
       users: [{ permission: "w,r,u,d", userName: "malek", email: "malek@how.com", password: "1234" },
       { permission: "w,r", userName: "malek2", email: "malek@how.com", password: "1234" }
       ],
-      orders: [],
+      orders: [{orderId:1,itemName:"pants",price:50,numOfItems:5,color:"green"}],
       orderId: "",
-      login: false,
+      login: true,
       dEmail: "",
       // edited: {
       //   eUserName:"",
@@ -111,7 +111,7 @@ export default class App extends Component {
       // console.log("res:", res.data)
       console.log("update done")
       this.getOrders()
-      // this.setState({ orders: res.data })
+      this.setState({ orders: res.data })
     })
       .catch((err) => {
         console.log(err)
@@ -229,20 +229,21 @@ export default class App extends Component {
 
           <Route path="/" >
             <Home />
-            <ul>
-              <li><Link to="/order" >OrdersList</Link></li>
-              <li><Link to="/customer" > CustomersList </Link></li>
-              <li><Link to="/login"> login </Link></li>
-              <li><Link to="/about" >about</Link></li>
+            <ul className = "homeList" >
+              <li><Link  className = "links" to="/order" >OrdersList</Link></li>
+              <li><Link className = "links" to="/customer" > CustomersList </Link></li>
+              <li><Link  className = "links"to="/login"> login </Link></li>
+              <li><Link  className = "links"to="/about" >about</Link></li>
             </ul>
+             {this.state.login?(<button onClick={logout} id="d" > logout</button>):("")}  
+
           </Route>
           <Route exact path="/login" >
-            {this.state.login?(<Redirect to="/order"></Redirect>):(<div>
-              <input onChange={email} type="search" placeholder="type your email" />
-            <input onChange={password} type="password" placeholder="type your password" />
-            <button onClick={login} >Login</button>
-            <button onClick={logout}> logout</button>
-            <Link to="/register" >register. . . </Link>
+            {this.state.login?(<Redirect to="/order"></Redirect>):(<div className="login" >
+              <input onChange={email} id="a" type="search" placeholder="type your email" />
+            <input onChange={password} id="b" type="password" placeholder="type your password" />
+            <button onClick={login} id="c" >Login</button>
+            <Link  className = "linksLog"id="e"to="/register" >register. . . </Link>
             </div>)}
            
           </Route>
@@ -250,31 +251,36 @@ export default class App extends Component {
           <Route exact path="/about" render={() => <About {...this.props} />} />
 
           <Route path="/order" >
-            {this.state.login ? (<div> <NewOrder update={updateOrder} add={addOrder} />
+            {this.state.login ? (<div className="oList">
+               <NewOrder className="newOrder" update={updateOrder} add={addOrder} />
               <button onClick={getOrders} >getOrders</button>
               <button onClick={deleteOrder} >deleteOrder</button>
-              <button onClick={updateOrder} >updateOrder</button>
+              {/* <button onClick={updateOrder} >updateOrder</button> */}
               <input onChange={orderId} placeholder="add Id" />
 
               <OrdersList exact orders={this.state.orders} />
 
             </div>)
-              : (<Link to="/login" > login first to
+              : (<Link className = "linksLog" to="/login" > login first to
             see the orders  </Link>)}
 
           </Route>
           <Route exact path="/customer"  >
-            <button onClick={getUsers} >get all Users</button>
-            <button onClick={deleteUsers} >delete all Users by email </button>
+            {/* <button onClick={getUsers} >get all Users</button> */}
+            {/* <button onClick={deleteUsers} >delete all Users by email </button> */}
+           <div className="customers" >
             <button onClick={deleteUser} >delete one User by email </button>
+            <input onChange={email} placeholder="add the email to delete or update" />
+            <div className="cUpdate">
+            <p> Update Information</p>
             <button onClick={updateUser} >update one User by email </button>
-            <input onChange={email} placeholder="delete email" />
             <input onChange={eUserName} placeholder="edit UserName" />
             <input onChange={eId} placeholder="edit Id" />
             <input onChange={ePassword} placeholder="edit Password" />
             <input onChange={ePermission} placeholder="edit Permission" />
             <input onChange={eBirthDay} placeholder="edit BirthDay" />
-
+            </div>
+            </div>
             <CustomersList users={this.state.users} />
           </Route>
         </div>

@@ -1,37 +1,118 @@
 .app {
-  border: solid green 5px;
+    border-top: solid green 5px;
+    display:block ;
+    margin: 8%;
 }
+
 .custList {
-  border: solid red 4px;
+    /* border: solid rgb(240, 230, 230) 4px; */
+    font-size: large;
+border-top: solid black 7px;
+    margin: 8%;
+background-color: beige;
 }
+
 .orderslist {
-  border: solid blue 4px;
+    border-top: solid blue 4px;
 }
+.olist{
+    display: grid;
+    grid-template-rows: 2;
+    grid-template-columns: 3;
+    margin: 0%;
+}
+.newOrder{
+    display: grid;
+grid-template-areas: "m l" "l1 r1" "l2 r2" "l3 r3";
+    border:solid rgb(238, 238, 241) 10px;
+}
+#r2{grid-area: r1;}
+#r3{grid-area: r2;}
+
+
 .orders {
-  border: solid black 3px;
-}.cust {
-  border: solid black 3px;
+    background-color: blueviolet;
+    border-top: solid rgb(197, 85, 85) 3px;
 }
+
+.cust {
+    border: solid black 3px;
+}
+
 
 /* don't forget to do line through */
 
-
 .home {
-  border: solid purple 7px;
-  text-transform: uppercase;
-}
-.tasks {
-  border: solid orange 7px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.about {
-  border: solid tomato 7px;
+    border: solid purple 7px;
+    text-transform: uppercase;
+    font-size: x-large;
+    color: aliceblue;
 }
 
-.main-nav{
-  list-style: none;
-  /* display: flex; */
+.homeList li {
+    list-style: none;
+    display: inline;
+    /* padding-left: 110px; */
+    padding-right: 110px;
 }
-.main-nav li{
-  display: inline;
+
+.links {
+justify-self: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: aliceblue;
+    font-size: x-large;
+    justify-content: center;
+
+}
+
+.linksLog {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: aliceblue;
+    font-size: large;
+justify-self: center;}
+
+.tasks {
+    border: solid orange 7px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about {
+    border: solid tomato 7px;
+}
+
+.main-nav {
+    list-style: none;
+    /* display: flex; */
+}
+
+.main-nav li {
+    display: inline;
+}
+
+.login {
+  display: grid;
+    height: 200px;
+     width: auto; 
+grid-template-areas: "a " " b" "c" "e";
+border: solid rgb(115, 128, 0) 19px;
+background-color: beige;
+padding: 70px;
+justify-content: center;
+
+}
+#a{ grid-area: a;}
+#b{ grid-area: b;}
+#c{ grid-area: c;}
+/* #d{ grid-area: d;} */
+#e{ grid-area: e;}
+
+.customers{
+    display: grid;
+margin: 8%;
+    font-size: large;
+}
+.cUpdate{
+    display: grid;
 }

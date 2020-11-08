@@ -37,17 +37,20 @@ export default class NewOrder extends Component {
     const { addedOrder, addedOrderPrice, addedOrderQuantity, addedOrderColor } = this
     return (
       <div>
-        <p>NewOrder</p>
-        <input onChange={addedOrder} placeholder="add New Order Name" /> 
+      <div>NewOrder</div>
+      <div className="newOrder">
+        <input id="r2" onChange={addedOrder} placeholder="add New Order Name" /> 
         <input onChange={addedOrderPrice} placeholder="add New Order Price" />
-        <input onChange={addedOrderQuantity} placeholder="add New Order Quantity " />
+        <input  onChange={addedOrderQuantity} placeholder="add New Order Quantity " />
         <input onChange={addedOrderColor} placeholder="add New Order Color" />
 
-        <button onClick={()=>{this.props.add(this.state.name,
+        <button id="r3" onClick={()=>{this.props.add(this.state.name,
           this.state.price,this.state.quantity,this.state.color)}} >add</button>
+          {/* this buton below is for the react code without server */}
           <button onClick={()=>{this.props.update(this.state.name,
-          this.state.price,this.state.quantity,this.state.color)}} >update by id </button>
+         this.state.price,this.state.quantity,this.state.color)}} >update by id </button> 
       {/* <App  New={this.state} /> */}
+      </div>
       </div>
     )
   }
